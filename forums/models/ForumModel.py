@@ -7,6 +7,7 @@ from django.db.models import (
     ForeignKey,
     CASCADE,
     ManyToManyField,
+    PositiveIntegerField,
 )
 from django.contrib.auth import get_user_model
 from django.urls import reverse
