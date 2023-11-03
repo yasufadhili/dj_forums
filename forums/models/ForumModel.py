@@ -66,5 +66,3 @@ class Forum(Model):
             return False  # Default to not allowing the user to post
 
 
-
-
