@@ -31,7 +31,14 @@ INSTALLED_APPS = [
 
     "rest_framework",
     "rest_framework.authtoken",
+
+    "django.contrib.sites",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
 ]
+
+SITE_ID = 1 # For allauth to function
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
