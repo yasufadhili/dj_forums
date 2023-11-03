@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     "authentication.apps.AuthenticationConfig",
+    "forums.apps.ForumsConfig",
 
     "rest_framework",
     "rest_framework.authtoken",
