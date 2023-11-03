@@ -7,13 +7,15 @@ from forums.models.ForumModel import *
 User = get_user_model()
 
 
-class Thread(DateFields):
+class Thread(Model):
 
-    forum = ForeignKey(Forum, verbose_name=_("Thread Forum"), on_delete=CASCADE)
+    forum = ForeignKey(Forum, on_delete=CASCADE, related_name='threads')
     author = ForeignKey(User, on_delete=CASCADE)
     title = CharField(max_length=255)
     slug = SlugField(unique=True, blank=True)
     content = TextField(max_length=1000)
+    created_at = DateTimeField(auto_now_add=True)
+    updated_at = DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = _("Thread")
