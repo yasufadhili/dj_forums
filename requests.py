@@ -59,3 +59,4 @@ def user_data():
         print("Failed to retrieve data. Check the API endpoint or authentication token.")
 
 
+login()
