@@ -39,7 +39,7 @@ class Forum(DateFields):
     slug = SlugField(unique=True, blank=True)
     image = URLField(blank=True, max_length=3000)
     description = TextField(max_length=1000, blank=True)
-    managers  = ManyToManyField(User, verbose_name=_("Forum managers"))
+    managers  = ManyToManyField(User, blank=True)
     accessibility = CharField(max_length=50, choices=ACCESSIBILITY_CHOICES, default='open')
     posting_permissions = CharField(max_length=50, choices=POSTING_PERMISSIONS_CHOICES, default='everyone')
     subscribers = ManyToManyField(User, related_name='subscribed_forums', default='creator_managers', blank=True)
