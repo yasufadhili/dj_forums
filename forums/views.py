@@ -1,3 +1,5 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+from forums.models import Forum
+
