@@ -11,6 +11,7 @@ from django.db.models import (
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from django.utils.text import slugify
 
 
 User = get_user_model()
@@ -64,5 +65,21 @@ class Forum(Model):
             return user == self.author or user in self.managers.all()
         else:
             return False  # Default to not allowing the user to post
+    
+    def save(self, *args, **kwargs):
+        # Generate a unique slug based on title and user's pk
+        if not self.slug:
+            base_slug = slugify(self.title)
+            unique_slug = base_slug
+            user_pk = str(self.author.pk)
+            counter = 1
+
+            while Forum.objects.filter(slug=unique_slug).exclude(pk=self.pk).exists():
+                unique_slug = f"{base_slug}-{user_pk}-{counter}"
+                counter += 1
+
+            self.slug = unique_slug
+
+        super(Forum, self).save(*args, **kwargs)
 
 
