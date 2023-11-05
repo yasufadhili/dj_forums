@@ -83,7 +83,7 @@ class Forum(Model):
             return user == self.author or user in self.managers.all()
         else:
             return False  # Default to not allowing the user to post
-    
+
     def save(self, *args, **kwargs):
         # Generate a unique slug based on title and user's pk
         if not self.slug:
