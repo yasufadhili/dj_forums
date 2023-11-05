@@ -8,14 +8,23 @@ from django.db.models import (
     CASCADE,
     ManyToManyField,
     PositiveIntegerField,
-    UUIDField
+    UUIDField,
+    
 )
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 import uuid
+
+from forums.models.ThreadModel import Thread
+from forums.models.PostModel import Post
+from forums.models.CommentModel import Comment
+from forums.models.EngagementModel import UpVote, DownVote
 
 
 User = get_user_model()
@@ -98,5 +107,34 @@ class Forum(DateTimeModel):
             self.slug = unique_slug
 
         super(Forum, self).save(*args, **kwargs)
+    
+    def total_threads(self):
+        threads = Thread.objects.filter(forum=self).count()
+        #threads = self.thread_set.count()
+        return threads
+
+    def total_posts(self):
+        posts = Post.objects.filter(thread__forum=self).count()
+        return posts
+
+    def total_comments(self):
+        comments = Comment.objects.filter(post__thread__forum=self).count()
+        pass
+
+    def total_thread_upvotes(self):
+        upvotes = UpVote.objects.filter(content_type=ContentType.objects.get_for_model(self),
+                                        upvote_type='T').count()
+        return upvotes
+    
+    def total_thread_downvotes(self):
+        downvotes = DownVote.objects.filter(content_type=ContentType.objects.get_for_model(self),
+                                            upvote_type='T').count()
+        return downvotes
+
+    def total_engagement(self):
+        pass
+
+
+
 
 
