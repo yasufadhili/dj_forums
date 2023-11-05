@@ -134,7 +134,17 @@ class Forum(DateTimeModel):
     def total_engagement(self):
         pass
 
+class ForumRating(Model):
+    author = ForeignKey(User, on_delete=CASCADE)
+    forum = ForeignKey(Forum, on_delete=CASCADE)
+    rating = PositiveIntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(5)]
+    )
 
+    class Meta:
+        unique_together = ['author', 'forum']  # Ensure a user can rate a forum only once
 
+    def __str__(self):
+        return f'{self.author.get_username} rated {self.forum.title} with {self.rating} stars'
 
 
