@@ -24,20 +24,13 @@ import uuid
 from forums.models.ThreadModel import Thread
 from forums.models.PostModel import Post
 from forums.models.CommentModel import Comment
-from forums.models.EngagementModel import UpVote, DownVote
+from forums.models.EngagementModel import UpVote, DownVote, get_total_upvotes, get_total_downvotes
 
 
 User = get_user_model()
 
 
-class DateTimeModel(Model):
-    created_at = DateTimeField(auto_now_add=True)
-    updated_at = DateTimeField(auto_now=True)
-
-    class Meta:
-        abstract = True
-
-class Forum(DateTimeModel):
+class Forum(Model):
 
     ACCESSIBILITY_CHOICES = (
         ('open', 'Open'),
