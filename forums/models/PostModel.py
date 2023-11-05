@@ -8,7 +8,7 @@ from forums.models.ThreadModel import Thread
 User = get_user_model()
 
 
-class Post(DateTimeModel):
+class Post(Model):
 
     id = UUIDField(_("Forum ID"),
                    primary_key=True,
@@ -21,6 +21,8 @@ class Post(DateTimeModel):
     views = PositiveIntegerField(default=0)
     likes = PositiveIntegerField(default=0)
     dislikes = PositiveIntegerField(default=0)
+    created_at = DateTimeField(auto_now_add=True)
+    updated_at = DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = _("Thread Post")
@@ -31,6 +33,12 @@ class Post(DateTimeModel):
     
     def get_absolute_url(self):
         return reverse("ThreadPost_detail", kwargs={"pk": self.pk})
+    
+    def total_upvotes(self):
+        return get_total_upvotes(self, self.id, 'P')
+
+    def total_downvotes(self):
+        return get_total_downvotes(self, self.id, 'P')
     
     def increment_views(self):
         self.views += 1
