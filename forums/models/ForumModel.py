@@ -113,13 +113,15 @@ class Forum(DateTimeModel):
         #threads = self.thread_set.count()
         return threads
 
+    '''
     def total_posts(self):
         posts = Post.objects.filter(thread__forum=self).count()
         return posts
-
+    
     def total_comments(self):
         comments = Comment.objects.filter(post__thread__forum=self).count()
         pass
+    '''
 
     def total_thread_upvotes(self):
         upvotes = UpVote.objects.filter(content_type=ContentType.objects.get_for_model(self),
