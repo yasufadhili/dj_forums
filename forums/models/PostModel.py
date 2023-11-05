@@ -10,6 +10,11 @@ User = get_user_model()
 
 class Post(DateTimeModel):
 
+    id = UUIDField(_("Forum ID"),
+                   primary_key=True,
+                   unique=True,
+                   editable=False,
+                   default=uuid.uuid4)
     author = ForeignKey(User, on_delete=CASCADE, related_name="thread_posts")
     thread = ForeignKey(Thread, on_delete=CASCADE)
     content = TextField(max_length=1000)

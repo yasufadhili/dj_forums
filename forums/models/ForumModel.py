@@ -8,11 +8,14 @@ from django.db.models import (
     CASCADE,
     ManyToManyField,
     PositiveIntegerField,
+    UUIDField
 )
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
+
+import uuid
 
 
 User = get_user_model()
@@ -39,6 +42,11 @@ class Forum(DateTimeModel):
         ('everyone', 'Everyone'),
     )
 
+    id = UUIDField(_("Forum ID"),
+                   primary_key=True,
+                   unique=True,
+                   editable=False,
+                   default=uuid.uuid4)
     author = ForeignKey(User, on_delete=CASCADE, related_name='forums_created')
     title = CharField(max_length=255)
     slug = SlugField(unique=True, blank=True)
