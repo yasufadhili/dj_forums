@@ -17,7 +17,15 @@ from django.utils.text import slugify
 
 User = get_user_model()
 
-class Forum(Model):
+
+class DateTimeModel(Model):
+    created_at = DateTimeField(auto_now_add=True)
+    updated_at = DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+class Forum(DateTimeModel):
 
     ACCESSIBILITY_CHOICES = (
         ('open', 'Open'),
