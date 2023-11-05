@@ -7,7 +7,7 @@ from forums.models.ForumModel import *
 User = get_user_model()
 
 
-class Thread(DateTimeModel):
+class Thread(Model):
 
     id = UUIDField(_("Forum ID"),
                    primary_key=True,
@@ -22,6 +22,8 @@ class Thread(DateTimeModel):
     views = PositiveIntegerField(default=0)
     likes = PositiveIntegerField(default=0)
     dislikes = PositiveIntegerField(default=0)
+    created_at = DateTimeField(auto_now_add=True)
+    updated_at = DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = _("Thread")
@@ -38,6 +40,16 @@ class Thread(DateTimeModel):
         if not self.slug:
             self.slug = slugify(self.title)
         super(Thread, self).save(*args, **kwargs)
+    
+    def total__posts(self):
+        posts = Post.objects.filter(thread__forum=self).count()
+        return posts
+    
+    def total_upvotes(self):
+        return get_total_upvotes(self, self.id, 'T')
+
+    def total_downvotes(self):
+        return get_total_downvotes(self, self.id, 'T')
     
     def increment_views(self):
         self.views += 1
