@@ -46,7 +46,6 @@ class Forum(Model):
 
     id = UUIDField(_("Forum ID"),
                    primary_key=True,
-                   unique=True,
                    editable=False,
                    default=uuid.uuid4)
     author = ForeignKey(User, on_delete=CASCADE, related_name='forums_created')
