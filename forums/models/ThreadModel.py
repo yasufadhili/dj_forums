@@ -14,7 +14,7 @@ class Thread(Model):
                    unique=True,
                    editable=False,
                    default=uuid.uuid4)
-    forum = ForeignKey(Forum, on_delete=CASCADE, related_name='threads')
+    forum = ForeignKey("Forum", on_delete=CASCADE, related_name='threads')
     author = ForeignKey(User, on_delete=CASCADE)
     title = CharField(max_length=255)
     slug = SlugField(unique=True, blank=True)
