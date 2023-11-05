@@ -7,7 +7,7 @@ from forums.models.ForumModel import *
 User = get_user_model()
 
 
-class Thread(Model):
+class Thread(DateTimeModel):
 
     forum = ForeignKey(Forum, on_delete=CASCADE, related_name='threads')
     author = ForeignKey(User, on_delete=CASCADE)
@@ -17,8 +17,6 @@ class Thread(Model):
     views = PositiveIntegerField(default=0)
     likes = PositiveIntegerField(default=0)
     dislikes = PositiveIntegerField(default=0)
-    created_at = DateTimeField(auto_now_add=True)
-    updated_at = DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name = _("Thread")
