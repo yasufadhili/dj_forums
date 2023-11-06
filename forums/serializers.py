@@ -10,7 +10,16 @@ from forums.models.PostModel import Post
 from forums.models.CommentModel import Comment
 from forums.models.EngagementModel import UpVote, DownVote
 
-User = get_user_model()
+
+class AuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+        fields = (
+            "id",
+            "username",
+            "first_name",
+            "last_name",
+        )
 
 
 class DownVoteSerializer(serializers.ModelSerializer):
@@ -44,6 +53,19 @@ class ThreadSerializer(serializers.ModelSerializer):
 
 
 class ForumSerializer(serializers.ModelSerializer):
+    author = AuthorSerializer(read_only=False, required=True)
+
     class Meta:
         model = Forum
-        fields = "__all__"
+        fields = (
+            "id",
+            "title",
+            "slug",
+            "image",
+            "description",
+            "accessibility",
+            "posting_permissions",
+            "author",
+            "created_at",
+            "updated_at"
+        )
