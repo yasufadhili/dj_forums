@@ -27,6 +27,24 @@ class ForumAdmin(admin.ModelAdmin):
     'title', 'total_threads', 'total_posts', 'total_comments', 'total_forum_upvotes', 'total_forum_downvotes',
     'total_engagement')
 
+    def total_threads(self, obj):
+        return obj.total_threads()
+
+    def total_posts(self, obj):
+        return obj.total_posts()
+
+    def total_comments(self, obj):
+        return obj.total_comments()
+
+    def total_forum_upvotes(self, obj):
+        return obj.total_forum_upvotes()
+
+    def total_forum_downvotes(self, obj):
+        return obj.total_forum_downvotes()
+
+    def total_engagement(self, obj):
+        return obj.total_engagement()
+
 
 class ThreadAdmin(admin.ModelAdmin):
     inlines = [PostInline]
@@ -35,7 +53,7 @@ class ThreadAdmin(admin.ModelAdmin):
 
 class PostAdmin(admin.ModelAdmin):
     inlines = [CommentInline]
-    list_display = ('title', 'thread', 'total_comments', 'total_post_upvotes', 'total_post_downvotes')
+    list_display = ('sliced_content', 'thread', 'total_comments', 'total_post_upvotes', 'total_post_downvotes')
 
 
 class CommentAdmin(admin.ModelAdmin):
