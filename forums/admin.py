@@ -24,8 +24,7 @@ class CommentInline(admin.TabularInline):
 class ForumAdmin(admin.ModelAdmin):
     inlines = [ThreadInline]
     list_display = (
-    'title', 'total_threads', 'total_posts', 'total_comments', 'total_forum_upvotes', 'total_forum_downvotes',
-    'total_engagement')
+    'title', 'total_threads', 'total_posts', 'total_comments', 'total_forum_upvotes', 'total_forum_downvotes',)
 
     def total_threads(self, obj):
         return obj.total_threads()
