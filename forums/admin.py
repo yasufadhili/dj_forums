@@ -23,8 +23,7 @@ class CommentInline(admin.TabularInline):
 
 class ForumAdmin(admin.ModelAdmin):
     inlines = [ThreadInline]
-    list_display = (
-    'title', 'total_threads', 'total_posts', 'total_comments', 'total_forum_upvotes', 'total_forum_downvotes',)
+    list_display = ('title', 'total_threads', 'total_posts', 'total_comments', 'total_forum_upvotes', 'total_forum_downvotes',)
 
     def total_threads(self, obj):
         return obj.total_threads()
@@ -49,10 +48,16 @@ class ThreadAdmin(admin.ModelAdmin):
     inlines = [PostInline]
     list_display = ('title', 'forum', 'total_posts', 'total_thread_upvotes', 'total_thread_downvotes')
 
+    def total_thread_upvotes(self, obj):
+        return obj.total_thread_upvotes
+
+    def total_thread_downvotes(self, obj):
+        return obj.total_thread_downvotes
+
 
 class PostAdmin(admin.ModelAdmin):
     inlines = [CommentInline]
-    list_display = ('sliced_content', 'thread', 'total_comments', 'total_post_upvotes', 'total_post_downvotes')
+    #list_display = ('sliced_content', 'thread', 'total_comments', 'total_post_upvotes', 'total_post_downvotes')
 
 
 class CommentAdmin(admin.ModelAdmin):
