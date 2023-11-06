@@ -57,7 +57,7 @@ class ThreadAdmin(admin.ModelAdmin):
 
 class PostAdmin(admin.ModelAdmin):
     inlines = [CommentInline]
-    #list_display = ('sliced_content', 'thread', 'total_comments', 'total_post_upvotes', 'total_post_downvotes')
+    list_display = ('sliced_content', 'thread', 'total_comments')
 
 
 class CommentAdmin(admin.ModelAdmin):
