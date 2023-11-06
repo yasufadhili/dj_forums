@@ -11,6 +11,7 @@ from forums.models.PostModel import Post
 
 User = get_user_model()
 
+
 class Thread(models.Model):
     id = models.UUIDField(
         _("Thread ID"),
