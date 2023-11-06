@@ -9,7 +9,7 @@ from django.db.models import (
     ManyToManyField,
     PositiveIntegerField,
     UUIDField,
-    
+
 )
 from django.contrib.auth import get_user_model
 from django.urls import reverse
@@ -26,19 +26,17 @@ from forums.models.PostModel import Post
 from forums.models.CommentModel import Comment
 from forums.models.EngagementModel import UpVote, DownVote, get_total_upvotes, get_total_downvotes
 
-
 User = get_user_model()
 
 
 class Forum(Model):
-
     ACCESSIBILITY_CHOICES = (
         ('open', 'Open'),
         ('subscribed', 'Subscribed')
     )
 
     POSTING_PERMISSIONS_CHOICES = (
-        #('creator', 'Creator'),
+        # ('creator', 'Creator'),
         ('creator_managers', 'Creators & Managers'),
         ('subscribers', 'Subscribers'),
         ('everyone', 'Everyone'),
@@ -63,13 +61,13 @@ class Forum(Model):
     class Meta:
         verbose_name = _("Forum")
         verbose_name_plural = _("Forums")
-    
+
     def __str__(self):
         return self.title
-    
+
     def get_absolute_url(self):
         return reverse("Forum_detail", kwargs={"pk": self.pk})
-    
+
     def can_user_post(self, user):
         if self.accessibility == 'subscribed':
             # If the forum is 'subscribed', check if the user is a subscriber
@@ -99,13 +97,13 @@ class Forum(Model):
             self.slug = unique_slug
 
         super(Forum, self).save(*args, **kwargs)
-    
+
+    '''
     def total_threads(self):
         threads = Thread.objects.filter(forum=self).count()
         #threads = self.thread_set.count()
         return threads
-
-    '''
+        
     def total_posts(self):
         posts = Post.objects.filter(thread__forum=self).count()
         return posts
@@ -113,7 +111,7 @@ class Forum(Model):
     def total_comments(self):
         comments = Comment.objects.filter(post__thread__forum=self).count()
         pass
-    '''
+    
 
     def total_thread_upvotes(self):
         upvotes = UpVote.objects.filter(content_type=ContentType.objects.get_for_model(self),
@@ -127,6 +125,62 @@ class Forum(Model):
 
     def total_engagement(self):
         pass
+        
+    '''
+
+    def total_threads(self):
+        return Thread.objects.filter(forum=self).count()
+
+    def total_posts(self):
+        return Post.objects.filter(thread__forum=self).count()
+
+    def total_comments(self):
+        return Comment.objects.filter(post__thread__forum=self).count()
+
+    def total_forum_upvotes(self):
+        content_type = ContentType.objects.get_for_model(self)
+        return UpVote.objects.filter(content_type=content_type, upvote_type='F').count()
+
+    def total_forum_downvotes(self):
+        content_type = ContentType.objects.get_for_model(self)
+        return DownVote.objects.filter(content_type=content_type, upvote_type='F').count()
+
+    def total_thread_upvotes(self):
+        content_type = ContentType.objects.get_for_model(Thread)
+        return UpVote.objects.filter(content_type=content_type, upvote_type='T',
+                                     object_id__in=self.threads.values_list('id', flat=True)).count()
+
+    def total_thread_downvotes(self):
+        content_type = ContentType.objects.get_for_model(Thread)
+        return DownVote.objects.filter(content_type=content_type, upvote_type='T',
+                                       object_id__in=self.threads.values_list('id', flat=True)).count()
+
+    def total_post_upvotes(self):
+        content_type = ContentType.objects.get_for_model(Post)
+        return UpVote.objects.filter(content_type=content_type, upvote_type='P',
+                                     object_id__in=self.threads.values_list('posts__id', flat=True)).count()
+
+    def total_post_downvotes(self):
+        content_type = ContentType.objects.get_for_model(Post)
+        return DownVote.objects.filter(content_type=content_type, upvote_type='P',
+                                       object_id__in=self.threads.values_list('posts__id', flat=True)).count()
+
+    def total_comment_upvotes(self):
+        content_type = ContentType.objects.get_for_model(Comment)
+        return UpVote.objects.filter(content_type=content_type, upvote_type='C',
+                                     object_id__in=self.threads.values_list('posts__comments__id', flat=True)).count()
+
+    def total_comment_downvotes(self):
+        content_type = ContentType.objects.get_for_model(Comment)
+        return DownVote.objects.filter(content_type=content_type, upvote_type='C',
+                                       object_id__in=self.threads.values_list('posts__comments__id', flat=True)).count()
+
+    def total_engagement(self):
+        return self.total_forum_upvotes() + self.total_forum_downvotes() + \
+            self.total_thread_upvotes() + self.total_thread_downvotes() + \
+            self.total_post_upvotes() + self.total_post_downvotes() + \
+            self.total_comment_upvotes() + self.total_comment_downvotes()
+
 
 class ForumRating(Model):
     author = ForeignKey(User, on_delete=CASCADE)
@@ -140,5 +194,3 @@ class ForumRating(Model):
 
     def __str__(self):
         return f'{self.author.get_username} rated {self.forum.title} with {self.rating} stars'
-
-
