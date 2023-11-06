@@ -157,7 +157,7 @@ class Forum(models.Model):
         content_type = ContentType.objects.get_for_model(Thread)
         return DownVote.objects.filter(content_type=content_type, upvote_type='T',
                                        object_id__in=self.threads.values_list('id', flat=True)).count()
-    
+
     def total_post_upvotes(self):
         content_type = ContentType.objects.get_for_model(Post)
         return UpVote.objects.filter(content_type=content_type, upvote_type='P',
