@@ -34,6 +34,9 @@ class Post(Model):
     def get_absolute_url(self):
         return reverse("ThreadPost_detail", kwargs={"pk": self.pk})
 
+    def sliced_content(self):
+        return self.content[:40]
+
     '''
     def total_upvotes(self):
         return get_total_upvotes(self, self.id, 'P')
