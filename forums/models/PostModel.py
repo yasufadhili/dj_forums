@@ -33,23 +33,28 @@ class Post(Model):
     
     def get_absolute_url(self):
         return reverse("ThreadPost_detail", kwargs={"pk": self.pk})
-    
+
+    '''
     def total_upvotes(self):
         return get_total_upvotes(self, self.id, 'P')
 
     def total_downvotes(self):
         return get_total_downvotes(self, self.id, 'P')
+    '''
     
     def increment_views(self):
         self.views += 1
         self.save()
 
-    def increment_likes(self):
-        self.likes += 1
-        self.save()
+    def total_comments(self):
+        return Comment.objects.filter(post__thread__post=self).count()
 
-    def increment_dislikes(self):
-        self.dislikes += 1
-        self.save()
+    def total_post_upvotes(self):
+        content_type = ContentType.objects.get_for_model(self)
+        return UpVote.objects.filter(content_type=content_type, upvote_type='P', object_id=self.id).count()
+
+    def total_post_downvotes(self):
+        content_type = ContentType.objects.get_for_model(self)
+        return DownVote.objects.filter(content_type=content_type, upvote_type='P', object_id=self.id).count()
 
 
