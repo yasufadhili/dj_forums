@@ -8,41 +8,42 @@ from forums.models.ForumModel import Forum
 from forums.models.ThreadModel import Thread
 from forums.models.PostModel import Post
 from forums.models.CommentModel import Comment
-from forums.models.EngagementModel import Upvote, Downvote
-
+from forums.models.EngagementModel import UpVote, DownVote
 
 User = get_user_model()
 
 
-class DownvoteSerializer(serializers.ModelSerializer):
+class DownVoteSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Downvote
+        model = DownVote
         fields = "__all__"
 
-class UpvoteSerializer(serializers.ModelSerializer):
+
+class UpVoteSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Upvote
+        model = UpVote
         fields = "__all__"
+
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = "__all__"
 
+
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Thread
+        model = Post
         fields = "__all__"
+
 
 class ThreadSerializer(serializers.ModelSerializer):
     class Meta:
         model = Thread
         fields = "__all__"
 
+
 class ForumSerializer(serializers.ModelSerializer):
     class Meta:
         model = Forum
         fields = "__all__"
-
-
-
