@@ -19,3 +19,6 @@ class ForumViewSet(viewsets.ModelViewSet):
     queryset = Forum.objects.all()
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     lookup_field = "id"
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
