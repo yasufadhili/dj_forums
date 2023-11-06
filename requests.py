@@ -1,7 +1,8 @@
 import requests
 
+
 def login():
-    login_url = "http://localhost:8000/auth/login/" 
+    login_url = "http://localhost:8000/auth/login/"
 
     # Create a dictionary with the user's credentials
     login_data = {
@@ -20,18 +21,19 @@ def login():
     else:
         print("Login failed. Check your credentials or the API endpoint.")
 
+
 def register():
-    register_url = "http://localhost:8000/auth/register/" 
-    
+    register_url = "http://localhost:8000/auth/register/"
+
     registration_data = {
         "username": "new_user",
-        "password": "password123", 
-        "email": "new_user@example.com",  
+        "password": "password123",
+        "email": "new_user@example.com",
     }
 
     # Make a POST request to the registration endpoint
     response = requests.post(register_url, data=registration_data)
-    
+
     # Check the response status code
     if response.status_code == 201:
         print("Registration successful!")
@@ -40,12 +42,11 @@ def register():
 
 
 def user_data():
-    
-    restricted_data_url = "http://localhost:8000/auth/user/" 
+    restricted_data_url = "http://localhost:8000/auth/user/"
 
     # Include the token in the request headers
     headers = {
-        "Authorization": f"Token {'token'}",  
+        "Authorization": f"Token {'token'}",
     }
 
     # Make a GET request with the token in the headers
@@ -59,3 +60,53 @@ def user_data():
         print("Failed to retrieve data. Check the API endpoint or authentication token.")
 
 
+def forum_actions():
+    # create
+    # update
+    # delete
+    pass
+
+
+def thread_actions():
+    # create
+    # update
+    # delete
+    pass
+
+
+def post_actions():
+    # create
+    # update
+    # delete
+    pass
+
+
+def comment_actions():
+    # create
+    # update
+    # delete
+    pass
+
+
+def create_forum():
+    pass
+
+
+def create_thread():
+    pass
+
+
+def create_post():
+    pass
+
+
+def create_comment():
+    pass
+
+
+def create_upvote():
+    pass
+
+
+def create_downvote():
+    pass
