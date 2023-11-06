@@ -41,27 +41,21 @@ class Thread(Model):
             self.slug = slugify(self.title)
         super(Thread, self).save(*args, **kwargs)
     
-    def total__posts(self):
+    def total_posts(self):
         posts = Post.objects.filter(thread__forum=self).count()
         return posts
-    
-    def total_upvotes(self):
-        return get_total_upvotes(self, self.id, 'T')
 
-    def total_downvotes(self):
-        return get_total_downvotes(self, self.id, 'T')
-    
     def increment_views(self):
         self.views += 1
         self.save()
 
-    def increment_likes(self):
-        self.likes += 1
-        self.save()
+    def total_thread_upvotes(self):
+        content_type = ContentType.objects.get_for_model(self)
+        return UpVote.objects.filter(content_type=content_type, upvote_type='T', object_id=self.id).count()
 
-    def increment_dislikes(self):
-        self.dislikes += 1
-        self.save()
+    def total_thread_downvotes(self):
+        content_type = ContentType.objects.get_for_model(self)
+        return DownVote.objects.filter(content_type=content_type, upvote_type='T', object_id=self.id).count()
     
 
 
