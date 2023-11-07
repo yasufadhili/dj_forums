@@ -12,6 +12,7 @@ from rest_framework import (
 
 from forums.models.ThreadModel import Thread
 from forums.models.ForumModel import Forum
+from forums.models.EngagementModel import UpVote, DownVote
 
 from forums.serializers import ThreadSerializer
 
@@ -23,6 +24,28 @@ class ThreadViewSet(viewsets.ModelViewSet):
     serializer_class = ThreadSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
     lookup_field = "id"
+
+    @decorators.action(detail=True, methods=['post'])
+    def like(self, request, id=None):
+        thread = self.get_object()
+        upvote, created = UpVote.objects.get_or_create(author=request.user, content_object=thread, upvote_type='P')
+        if created:
+            thread.likes += 1
+            thread.save()
+            return response.Response({"message": "Liked the thread."}, status=status.HTTP_200_OK)
+        else:
+            return response.Response({"message": "You have already liked the thread."}, status=status.HTTP_400_BAD_REQUEST)
+
+    @decorators.action(detail=True, methods=['post'])
+    def dislike(self, request, id=None):
+        thread = self.get_object()
+        downvote, created = DownVote.objects.get_or_create(author=request.user, content_object=thread, upvote_type='P')
+        if created:
+            thread.dislikes += 1
+            thread.save()
+            return response.Response({"message": "Disliked the thread."}, status=status.HTTP_200_OK)
+        else:
+            return response.Response({"message": "You have already disliked the thread."}, status=status.HTTP_400_BAD_REQUEST)
 
     @decorators.action(detail=True, methods=['get'])
     def related_threads(self, request, forum_id=None, id=None):
