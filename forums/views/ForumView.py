@@ -58,6 +58,15 @@ class ForumViewSet(viewsets.ModelViewSet):
         forum.save()
         return response.Response({"message": "Unsubscribed from the forum."}, status=status.HTTP_200_OK)
 
+    @decorators.action(detail=False, methods=['get'])
+    def search(self, request):
+        query = request.query_params.get('q')
+        if not query:
+            return response.Response({"message": "Please provide a search query."}, status=status.HTTP_400_BAD_REQUEST)
+        results = Forum.objects.filter(title__icontains=query)
+        serialized_results = ForumSerializer(results, many=True)
+        return response.Response(serialized_results.data, status=status.HTTP_200_OK)
+
     
 
 
