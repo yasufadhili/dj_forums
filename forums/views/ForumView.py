@@ -67,7 +67,13 @@ class ForumViewSet(viewsets.ModelViewSet):
         serialized_results = ForumSerializer(results, many=True)
         return response.Response(serialized_results.data, status=status.HTTP_200_OK)
 
-    
+    @decorators.action(detail=False, methods=['get'])
+    def popular(self, request):
+        # Implement popular forums logic
+        # : Get the forums with the highest number of subscribers
+        popular_forums = Forum.objects.annotate(subscriber_count=models.Count('subscribers')).order_by('-subscriber_count')[:10]
+        serialized_popular_forums = ForumSerializer(popular_forums, many=True)
+        return response.Response(serialized_popular_forums.data, status=status.HTTP_200_OK)
 
 
 
