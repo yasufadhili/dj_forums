@@ -64,7 +64,7 @@ class ThreadViewSet(viewsets.ModelViewSet):
 
     @decorators.action(detail=False, methods=['post'])
     def create_thread_with_attributes(self, request, forum_id=None):
-        # Customize thread creation logic with additional attributes
+        # Customise thread creation logic with additional attributes
         # Example: Custom attribute handling
         custom_attribute = request.data.get('custom_attribute')
         if not custom_attribute:
