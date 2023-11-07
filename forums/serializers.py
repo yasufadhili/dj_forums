@@ -53,7 +53,7 @@ class ThreadSerializer(serializers.ModelSerializer):
 
 
 class ForumSerializer(serializers.ModelSerializer):
-    #author = AuthorSerializer(read_only=False, required=True)
+    author = AuthorSerializer(read_only=False, required=True)
     #author = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
