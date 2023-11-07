@@ -49,6 +49,15 @@ class ForumViewSet(viewsets.ModelViewSet):
         forum.save()
         return response.Response({"message": "Subscribed to the forum."}, status=status.HTTP_200_OK)
 
+    @decorators.action(detail=True, methods=['post'])
+    def unsubscribe(self, request, pk=None):
+        forum = self.get_object()
+        if request.user not in forum.subscribers.all():
+            return response.Response({"message": "Not subscribed to the forum."}, status=status.HTTP_400_BAD_REQUEST)
+        forum.subscribers.remove(request.user)
+        forum.save()
+        return response.Response({"message": "Unsubscribed from the forum."}, status=status.HTTP_200_OK)
+
     
 
 
