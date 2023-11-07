@@ -11,6 +11,7 @@ from rest_framework import (
 )
 
 from forums.models.ThreadModel import Thread
+from forums.models.ForumModel import Forum
 
 from forums.serializers import ThreadSerializer
 
