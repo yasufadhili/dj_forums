@@ -11,14 +11,20 @@ from forums.models.ForumModel import Forum, ForumRating
 
 from forums.serializers import ForumSerializer
 
+from forums.permissions import IsAuthorOrReadOnly
+
 User = get_user_model()
 
 
 class ForumViewSet(viewsets.ModelViewSet):
-    serializer_class = ForumSerializer
     queryset = Forum.objects.all()
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    lookup_field = "id"
+    serializer_class = ForumSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsAuthorOrReadOnly]
+    lookup_field = "pk"
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+
+
+
