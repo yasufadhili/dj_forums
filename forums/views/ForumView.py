@@ -75,6 +75,10 @@ class ForumViewSet(viewsets.ModelViewSet):
         serialized_popular_forums = ForumSerializer(popular_forums, many=True)
         return response.Response(serialized_popular_forums.data, status=status.HTTP_200_OK)
 
+    @decorators.action(detail=False, methods=['get'])
+    def trending(self):
+        pass
+
 
 
 
